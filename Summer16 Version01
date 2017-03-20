@@ -1,0 +1,305 @@
+package test1;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+
+public class Dictionary_01 extends JFrame {
+	
+	static JFrame main_window, exit_window, eng_turWindow, tur_engWindow;
+	static JTextField output_field_meaning1, output_field_meaning2, otherforms_field;
+	static JTextField input_field;
+	static JLabel enter_label, meaning_label, otherforms_label;
+	static JLabel e_window_label1, e_window_label2;
+	static JButton translate_button, exit_button;
+	static JButton e_window_y_button, e_window_n_button;
+	static JMenuBar menubar;
+	static JMenu mw_resource, mw_settings;
+	static JMenuItem item_eng_tur, item_tur_eng;
+	static JTextArea eng_turWords, tur_engWords;
+	static JScrollPane scroll;
+	static Color tbut_bg_color, ebut_bg_color, ybut_bg_color, nbut_bg_color;
+	static Color tbut_text_color, ebut_text_color, ybut_text_color, nbut_text_color;
+	static Color mw_bg_color, ew_bg_color;
+	static Color e_label_color, m_label_color, of_label_color,que_lab_color;
+	static String input_word="", meaning1="", meaning2="", otherforms=""; 
+	static int kaydırma=20;  //y ekseninde kaydırma için
+	
+	public static void main(String [] args){
+		
+		mainGui();
+
+		translate_button.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent olay){
+				
+				input_word=input_field.getText();
+				
+				translate_button.setBorder(new BevelBorder(BevelBorder.LOWERED));
+				try {
+					Thread.sleep(90);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				translate_button.setBorder(new BevelBorder(BevelBorder.RAISED));
+				
+				words();
+				
+				output_field_meaning1.setText(meaning1);
+				output_field_meaning2.setText(meaning2);
+				otherforms_field.setText(otherforms);
+				
+			}
+		});	
+		
+		exit_button.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent olay){
+
+				exit_button_Gui();
+				
+				exit_button.setBorder(new BevelBorder(BevelBorder.LOWERED));
+				
+				try {
+					Thread.sleep(60);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				exit_button.setBorder(new BevelBorder(BevelBorder.RAISED));
+				
+				main_window.setEnabled(false);
+				
+				e_window_y_button.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent olay){
+						
+						e_window_y_button.setBorder(new BevelBorder(BevelBorder.LOWERED));
+						
+						try {
+							Thread.sleep(30);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						
+						e_window_y_button.setBorder(new BevelBorder(BevelBorder.RAISED));
+						System.exit(0);
+					}
+				});
+				
+				e_window_n_button.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent olay){
+						
+						e_window_n_button.setBorder(new BevelBorder(BevelBorder.LOWERED));
+						
+						try {
+							Thread.sleep(40);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						
+						e_window_n_button.setBorder(new BevelBorder(BevelBorder.RAISED));
+						exit_window.dispose();
+						main_window.setEnabled(true);
+					}
+				});
+				
+			}
+			
+		});
+		
+		item_eng_tur.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent olay){
+				
+				eng_tur_Gui();
+				
+			}
+			
+		});
+		
+		item_tur_eng.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent olay){
+			
+				tur_eng_Gui();
+				
+			}
+			
+		});
+		
+	}
+
+	public static void setLayouter(int x, int y, int en, int boy, Component nesne) {
+		
+		nesne.setLocation(x,y);
+		nesne.setSize(en,boy);
+	}
+	
+	public static void mainGui(){
+		
+		main_window = new JFrame();
+		main_window.setTitle("Dictionary");
+		main_window.getContentPane().setLayout(null);
+		main_window.setBounds(800, 300, 500, 345);
+		main_window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		menubar=new JMenuBar();
+		mw_resource=new JMenu("     Resource     ");
+		mw_settings=new JMenu("     Settings     ");
+		item_eng_tur=new JMenuItem(" Eng-Tur        ");
+		item_tur_eng=new JMenuItem(" Tur-Eng        ");
+		
+		mw_resource.setMnemonic(KeyEvent.VK_R); 			//	altıçizili harfler			//	mw_engtur.setMnemonic('E');
+		mw_settings.setMnemonic(KeyEvent.VK_S);
+		item_eng_tur.setMnemonic(KeyEvent.VK_E);
+		item_tur_eng.setMnemonic(KeyEvent.VK_T);
+		
+		menubar.add(Box.createRigidArea(new Dimension(0,20)));
+		mw_resource.add(item_eng_tur);
+		mw_resource.add(item_tur_eng);
+		menubar.add(mw_resource);
+		menubar.add(mw_settings);
+		main_window.setJMenuBar(menubar);
+		main_window.getContentPane().add(menubar);
+		
+		mw_bg_color=new Color(255,222,173);
+		tbut_bg_color=new Color(135,206,235);
+		ebut_bg_color=new Color(205,92,92);
+		e_label_color=new Color(139,69,19);
+		m_label_color=new Color(139,69,19);
+		of_label_color=new Color(139,69,19);
+		tbut_text_color=new Color(25,25,112);
+		ebut_text_color=new Color(255,34,34);
+		
+		enter_label =new JLabel("Please Enter Word:");
+		setLayouter(20,30+kaydırma,190,20,enter_label);
+		enter_label.setForeground(e_label_color);
+		main_window.getContentPane().add(enter_label);
+		
+		input_field =new JTextField();
+		setLayouter(140,30+kaydırma,190,20,input_field);
+		main_window.getContentPane().add(input_field);
+		
+		translate_button=new JButton("Translate !");
+		setLayouter(340,25+kaydırma,130,30,translate_button);
+		translate_button.setToolTipText("You can use that to translate word from English to Turkish");
+		translate_button.setBackground(tbut_bg_color);
+		translate_button.setForeground(tbut_text_color);
+		translate_button.setBorder(new BevelBorder(BevelBorder.RAISED));
+		main_window.getContentPane().add(translate_button);
+		
+		meaning_label=new JLabel("Meanings:");
+		setLayouter(20,75+kaydırma,120,20,meaning_label);
+		meaning_label.setForeground(m_label_color);
+		main_window.getContentPane().add(meaning_label);
+		
+		output_field_meaning1=new JTextField();
+		setLayouter(90,70+kaydırma,320,30,output_field_meaning1);
+		output_field_meaning1.setEditable(false);
+		main_window.getContentPane().add(output_field_meaning1);
+		
+		output_field_meaning2=new JTextField();
+		setLayouter(90,110+kaydırma,320,30,output_field_meaning2);
+		output_field_meaning2.setEditable(false);
+		main_window.getContentPane().add(output_field_meaning2);
+		
+		otherforms_label=new JLabel("Other Forms:");
+		setLayouter(20,170+kaydırma,120,20,otherforms_label);
+		otherforms_label.setForeground(of_label_color);
+		main_window.getContentPane().add(otherforms_label);
+		
+		otherforms_field=new JTextField();
+		setLayouter(110,160+kaydırma,300,40,otherforms_field);
+		otherforms_field.setEditable(false);
+		main_window.getContentPane().add(otherforms_field);
+		
+		exit_button=new JButton("EXIT");
+		setLayouter(340,220+kaydırma,110,30,exit_button);
+		exit_button.setToolTipText("to close the application");
+		exit_button.setBackground(ebut_bg_color);
+		exit_button.setForeground(ebut_text_color);
+		main_window.getContentPane().add(exit_button);
+		
+		main_window.getContentPane().setBackground(mw_bg_color);
+		main_window.setVisible(true);
+	}
+	
+	public static void exit_button_Gui(){
+		
+		exit_window=new JFrame();
+		exit_window.setTitle("        ********     Exit !    ********");
+		exit_window.getContentPane().setLayout(null);
+		exit_window.setSize(350,180);
+		exit_window.setLocation(850,350);
+	//	exit_window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		ew_bg_color=new Color(240,128,128);
+		ybut_bg_color=new Color(0,255,127);
+		nbut_bg_color=new Color(205,92,92);
+		ybut_text_color=new Color(0,100,0);
+		nbut_text_color=new Color(128,0,0);
+		que_lab_color=new Color(128,0,0);
+		
+		e_window_label1=new JLabel("<html><span style='font-size:12px'>Are You Sure</span></html>");
+		setLayouter(115,20,400,40,e_window_label1);
+		e_window_label1.setForeground(que_lab_color);
+		exit_window.getContentPane().add(e_window_label1);
+		
+		e_window_label2=new JLabel("<html><span style='font-size:12px'>You Want to Quit ?</span></html>");
+		setLayouter(100,50,400,20,e_window_label2);
+		e_window_label2.setForeground(que_lab_color);
+		exit_window.getContentPane().add(e_window_label2);
+		
+		e_window_y_button=new JButton(" YES ");
+		setLayouter(55,90,100,30,e_window_y_button);
+		e_window_y_button.setBackground(ybut_bg_color);
+		e_window_y_button.setForeground(ybut_text_color);
+		exit_window.getContentPane().add(e_window_y_button);
+		
+		e_window_n_button=new JButton("NO");
+		setLayouter(195,90,100,30,e_window_n_button);
+		e_window_n_button.setBackground(nbut_bg_color);
+		e_window_n_button.setForeground(nbut_text_color);
+		exit_window.getContentPane().add(e_window_n_button);
+		
+		exit_window.getContentPane().setBackground(ew_bg_color);
+		exit_window.setVisible(true);
+	}
+
+	public static void eng_tur_Gui(){    //düzenle
+		
+		eng_turWindow=new JFrame();
+		eng_turWindow.setTitle("  English to Turkish ");
+		eng_turWindow.getContentPane().setLayout(null);
+		eng_turWindow.setBounds(300, 75, 500, 600);
+		eng_turWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		eng_turWords=new JTextArea("adas",5,10);
+		eng_turWords.setPreferredSize(new Dimension(100,100));
+		scroll=new JScrollPane(eng_turWords, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		eng_turWords.setLineWrap(true);
+		eng_turWindow.getContentPane().add(eng_turWords);
+		eng_turWindow.getContentPane().add(scroll);
+		
+		eng_turWindow.setVisible(true);
+	}
+
+	public static void tur_eng_Gui(){    //düzenle
+		
+		tur_engWindow=new JFrame();
+		tur_engWindow.setTitle("  Turkish to English");
+		tur_engWindow.getContentPane().setLayout(null);
+		tur_engWindow.setBounds(300,75,500,600);
+		tur_engWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		tur_engWindow.setVisible(true);
+	}
+	
+	public static void words(){
+		
+		if(input_word.toLowerCase().equals("exceed")){
+			meaning1="  -->  sınırı aşmak (v)"; 
+			meaning2="  -->  aşmak (v)";
+			otherforms="  -->  exceedding (adj)";
+		}
+
+	}
+	
+}
